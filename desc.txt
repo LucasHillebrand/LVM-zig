@@ -1,0 +1,23 @@
+dst, a, b, reg, src, dst, pc, byte ==> register
+
+const => hardcoded (no register)
+
+0   noop => no operation
+1   add [dst] [a] [b] 
+2   sub [dst] [a] [b]
+
+3   sma [reg] => (set mem ptr)
+4   smv [src] [byte] => (set ptr value) // todo
+5   gmv [dst] [byte] => (get ptr value) // todo
+6   gms [dst] => (get memory size) // todo
+
+7   jmp [reg]
+8   jiz [reg] [test]
+9   jnz [reg] [test]
+
+10  nt [reg] [pc] // todo
+11  kt [reg] // todo
+12  srb [dst] [byte{const}] [num (0..255)] => (set register byte)
+13  spc [dst] => (store programm counter) 
+
+255  hlt // todo
