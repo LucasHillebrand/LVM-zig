@@ -7,17 +7,60 @@ const => hardcoded (no register)
 2   sub [dst] [a] [b]
 
 3   sma [reg] => (set mem ptr)
-4   smv [src] [byte] => (set ptr value) // todo
-5   gmv [dst] [byte] => (get ptr value) // todo
-6   gms [dst] => (get memory size) // todo
+4   smv [src] [byte] => (set ptr value) // system
+5   gmv [dst] [byte] => (get ptr value) // system
+6   gms [dst] => (get memory size) // system
 
 7   jmp [reg]
 8   jiz [reg] [test]
 9   jnz [reg] [test]
 
-10  nt [reg] [pc] // todo
-11  kt [reg] // todo
+10  nt [reg] [pc] // system
+11  kt [reg] // system
 12  srb [dst] [byte{const}] [num (0..255)] => (set register byte)
 13  spc [dst] => (store programm counter) 
 
-255  hlt // todo
+255  hlt // system
+
+
+/// vm args
+-m [memory allocation](KB/MB/GB) // default 512 MB
+-f [file to execute]
+-d // debug mode
+-h // prints help
+
+
+// lasm
+
+variables:
+
+use:
+    $[name]
+
+declaration:
+    private : var! [name] [value (64 bit)]
+    public [always at first]: pub! [name] [value (64 bit)]
+
+constants:
+    . => curr pc
+
+number declaration:
+    decimal: [number]
+    hexadecimal: 0x[number]
+    binary: 0b[number]
+
+additional commands:
+    sfr [reg] [number (64 bit)]
+    free [size in bytes]
+    incf [raw file to include] [size (reserved space for the file)] // include an raw file in an freed space
+    // sbyte [dst] [reg]
+    // snum [dst] [reg]
+    // lbyte [dst] [reg]
+    // lnum [dst] [reg]
+
+comptime commands:
+    print! [descriptor] [num]
+    var! [varname] [value(num)]
+    pub! [varname] [value(num)]
+
+16 commands

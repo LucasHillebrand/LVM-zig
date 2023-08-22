@@ -1,10 +1,11 @@
 const m = @import("./math.zig");
 const std = @import("std");
+const efn = @import("./efn.zig");
 
 pub const thread = struct {
     register: [8][8]u8,
     pc: u64, // programm counter
-    cba: u64, // current bus address
+    cma: u64, // current mem address
     status: u1, // status (1 => runnnung, 0 => not running)
 
     pub fn add(self: *thread, args: [3]u8) void {
@@ -14,7 +15,7 @@ pub const thread = struct {
         self.register[args[0]] = m.sub(self.register[args[1]], self.register[args[2]]);
     }
     pub fn sma(self: *thread, args: [3]u8) void {
-        self.cba = m.toInt(self.register[args[0]]);
+        self.cma = m.toInt(self.register[args[0]]);
     }
     pub fn jmp(self: *thread, args: [3]u8) void {
         self.pc = m.toInt(self.register[args[0]]);
@@ -32,16 +33,16 @@ pub const thread = struct {
         self.register[args[0]] = m.toArr(self.pc);
     }
 
-    pub fn print(self: *thread) void {
+    pub fn print(self: *thread, errc: *u64) void {
         var i: u4 = 0;
         while (i < 8) : (i += 1) {
-            std.debug.print("reg: ({d}) {any} => ({d})\n", .{ i, self.register[i], m.toInt(self.register[i]) });
+            efn.print("reg: ({d}) {any} => ({d})\n", .{ i, self.register[i], m.toInt(self.register[i]) }, errc);
         }
-        std.debug.print("pc: ({d})\ncma: ({d})\nstatus: ({d})\n", .{ self.pc, self.cba, self.status });
+        efn.print("pc: ({d})\ncma: ({d})\nstatus: ({d})\n", .{ self.pc, self.cma, self.status }, errc);
     }
 
     pub fn clr(self: *thread) void {
-        self.cba = 0;
+        self.cma = 0;
         self.pc = 0;
         self.status = 0;
         for (self.register) |*iteml| {

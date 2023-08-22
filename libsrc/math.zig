@@ -14,18 +14,14 @@ pub fn toArr(num: u64) [8]u8 {
 pub fn pow(o: u64, n: u64) u64 {
     var i: u64 = 0;
     var res: u64 = 1;
-    while (i < n) : (i += 1) {
-        res *%= o;
-    }
+    while (i < n) : (i += 1) res *%= o;
     return res;
 }
 
 pub fn toInt(arrnum: [8]u8) u64 {
     var i: u4 = 0;
     var res: u64 = 0;
-    while (i < 8) : (i += 1) {
-        res +%= @intCast(u64, arrnum[i]) * pow(256, i);
-    }
+    while (i < 8) : (i += 1) res +%= @intCast(u64, arrnum[i]) * pow(256, i);
     return res;
 }
 

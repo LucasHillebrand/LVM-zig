@@ -1,0 +1,7 @@
+// testprogramm
+var! memptr .
+free 1025
+
+pub! main .
+sfr R4 1337
+hlt
