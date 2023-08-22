@@ -1,4 +1,8 @@
-build: build-lvm build-lasm
+init:
+	bash -c "if ls bin;then echo -n "";else mkdir bin;fi"
+	bash -c "if ls main.lasm ;then echo -n "";else ln -s demo/simple.lasm main.lasm;fi"
+
+build: init build-lvm build-lasm
 
 build-lvm:
 	zig cc lvm.zig -o bin/lvm -target x86_64-linux 
@@ -10,8 +14,7 @@ build-lasm:
 
 run: build run-prog
 
-run-prog:
-	bash -c "if ls main.lasm ;then echo -n "";else ln -s demo/simple.lasm main.lasm;fi"
+run-prog: init
 	bin/lasm main.lasm -o ./bin/demo.lbin
 	bin/lvm -f ./bin/demo.lbin -d|less
 	
@@ -22,4 +25,5 @@ run-lasm: build-lasm
 	bin/lasm main.lasm -o ./bin/main.lbin
 
 clean:
-	rm bin/*
+	rm -r bin
+	bash -c "if ls main.lasm; then rm main.lasm;fi"
