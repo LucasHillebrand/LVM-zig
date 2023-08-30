@@ -7,7 +7,7 @@ const efn = @import("./efn.zig");
 
 pub fn resolveline(line: string, file: std.fs.File, pc: *u64, vars: *parser.sysvars, errc: *u64) void {
     var words: [4]string = undefined;
-    for (words) |*w| w.* = string.genstr("") catch |err| efn.errhandl(err, errc, string);
+    for (&words) |*w| w.* = string.genstr("") catch |err| efn.errhandl(err, errc, string);
     var word: u4 = 0;
     var i: u64 = 0;
     var curr: u8 = 0;
@@ -20,7 +20,7 @@ pub fn resolveline(line: string, file: std.fs.File, pc: *u64, vars: *parser.sysv
 
     resolvwords(words, file, pc, vars, errc);
 
-    for (words) |*w| w.free();
+    for (&words) |*w| w.free();
 }
 
 pub fn resolvwords(words: [4]string, file: std.fs.File, pc: *u64, vars: *parser.sysvars, errc: *u64) void {
@@ -58,57 +58,57 @@ pub fn noop(file: std.fs.File, pc: *u64, args: [3]string, vars: *parser.sysvars)
     try parser.parse(file, .{ commands.noop, 0, 0, 0 }, pc);
 }
 pub fn add(file: std.fs.File, pc: *u64, args: [3]string, vars: *parser.sysvars) !void {
-    try parser.parse(file, .{ commands.add, @intCast(u8, try parser.argparse(vars, pc, args[0]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[1]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[2]) % 256) }, pc);
+    try parser.parse(file, .{ commands.add, @as(u8, @intCast(try parser.argparse(vars, pc, args[0]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[1]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[2]) % 256)) }, pc);
 }
 pub fn sub(file: std.fs.File, pc: *u64, args: [3]string, vars: *parser.sysvars) !void {
-    try parser.parse(file, .{ commands.sub, @intCast(u8, try parser.argparse(vars, pc, args[0]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[1]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[2]) % 256) }, pc);
+    try parser.parse(file, .{ commands.sub, @as(u8, @intCast(try parser.argparse(vars, pc, args[0]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[1]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[2]) % 256)) }, pc);
 }
 
 pub fn sma(file: std.fs.File, pc: *u64, args: [3]string, vars: *parser.sysvars) !void {
-    try parser.parse(file, .{ commands.sma, @intCast(u8, try parser.argparse(vars, pc, args[0]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[1]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[2]) % 256) }, pc);
+    try parser.parse(file, .{ commands.sma, @as(u8, @intCast(try parser.argparse(vars, pc, args[0]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[1]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[2]) % 256)) }, pc);
 }
 pub fn smv(file: std.fs.File, pc: *u64, args: [3]string, vars: *parser.sysvars) !void {
-    try parser.parse(file, .{ commands.smv, @intCast(u8, try parser.argparse(vars, pc, args[0]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[1]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[2]) % 256) }, pc);
+    try parser.parse(file, .{ commands.smv, @as(u8, @intCast(try parser.argparse(vars, pc, args[0]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[1]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[2]) % 256)) }, pc);
 }
 pub fn gmv(file: std.fs.File, pc: *u64, args: [3]string, vars: *parser.sysvars) !void {
-    try parser.parse(file, .{ commands.gmv, @intCast(u8, try parser.argparse(vars, pc, args[0]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[1]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[2]) % 256) }, pc);
+    try parser.parse(file, .{ commands.gmv, @as(u8, @intCast(try parser.argparse(vars, pc, args[0]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[1]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[2]) % 256)) }, pc);
 }
 pub fn gms(file: std.fs.File, pc: *u64, args: [3]string, vars: *parser.sysvars) !void {
-    try parser.parse(file, .{ commands.gms, @intCast(u8, try parser.argparse(vars, pc, args[0]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[1]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[2]) % 256) }, pc);
+    try parser.parse(file, .{ commands.gms, @as(u8, @intCast(try parser.argparse(vars, pc, args[0]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[1]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[2]) % 256)) }, pc);
 }
 
 pub fn jmp(file: std.fs.File, pc: *u64, args: [3]string, vars: *parser.sysvars) !void {
-    try parser.parse(file, .{ commands.jmp, @intCast(u8, try parser.argparse(vars, pc, args[0]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[1]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[2]) % 256) }, pc);
+    try parser.parse(file, .{ commands.jmp, @as(u8, @intCast(try parser.argparse(vars, pc, args[0]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[1]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[2]) % 256)) }, pc);
 }
 pub fn jiz(file: std.fs.File, pc: *u64, args: [3]string, vars: *parser.sysvars) !void {
-    try parser.parse(file, .{ commands.jiz, @intCast(u8, try parser.argparse(vars, pc, args[0]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[1]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[2]) % 256) }, pc);
+    try parser.parse(file, .{ commands.jiz, @as(u8, @intCast(try parser.argparse(vars, pc, args[0]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[1]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[2]) % 256)) }, pc);
 }
 pub fn jnz(file: std.fs.File, pc: *u64, args: [3]string, vars: *parser.sysvars) !void {
-    try parser.parse(file, .{ commands.jnz, @intCast(u8, try parser.argparse(vars, pc, args[0]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[1]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[2]) % 256) }, pc);
+    try parser.parse(file, .{ commands.jnz, @as(u8, @intCast(try parser.argparse(vars, pc, args[0]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[1]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[2]) % 256)) }, pc);
 }
 
 pub fn nt(file: std.fs.File, pc: *u64, args: [3]string, vars: *parser.sysvars) !void {
-    try parser.parse(file, .{ commands.nt, @intCast(u8, try parser.argparse(vars, pc, args[0]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[1]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[2]) % 256) }, pc);
+    try parser.parse(file, .{ commands.nt, @as(u8, @intCast(try parser.argparse(vars, pc, args[0]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[1]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[2]) % 256)) }, pc);
 }
 pub fn kt(file: std.fs.File, pc: *u64, args: [3]string, vars: *parser.sysvars) !void {
-    try parser.parse(file, .{ commands.kt, @intCast(u8, try parser.argparse(vars, pc, args[0]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[1]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[2]) % 256) }, pc);
+    try parser.parse(file, .{ commands.kt, @as(u8, @intCast(try parser.argparse(vars, pc, args[0]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[1]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[2]) % 256)) }, pc);
 }
 pub fn srb(file: std.fs.File, pc: *u64, args: [3]string, vars: *parser.sysvars) !void {
-    try parser.parse(file, .{ commands.srb, @intCast(u8, try parser.argparse(vars, pc, args[0]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[1]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[2]) % 256) }, pc);
+    try parser.parse(file, .{ commands.srb, @as(u8, @intCast(try parser.argparse(vars, pc, args[0]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[1]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[2]) % 256)) }, pc);
 }
 pub fn spc(file: std.fs.File, pc: *u64, args: [3]string, vars: *parser.sysvars) !void {
-    try parser.parse(file, .{ commands.spc, @intCast(u8, try parser.argparse(vars, pc, args[0]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[1]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[2]) % 256) }, pc);
+    try parser.parse(file, .{ commands.spc, @as(u8, @intCast(try parser.argparse(vars, pc, args[0]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[1]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[2]) % 256)) }, pc);
 }
 
 pub fn hlt(file: std.fs.File, pc: *u64, args: [3]string, vars: *parser.sysvars) !void {
-    try parser.parse(file, .{ commands.hlt, @intCast(u8, try parser.argparse(vars, pc, args[0]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[1]) % 256), @intCast(u8, try parser.argparse(vars, pc, args[2]) % 256) }, pc);
+    try parser.parse(file, .{ commands.hlt, @as(u8, @intCast(try parser.argparse(vars, pc, args[0]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[1]) % 256)), @as(u8, @intCast(try parser.argparse(vars, pc, args[2]) % 256)) }, pc);
 }
 
 pub fn sfr(file: std.fs.File, pc: *u64, args: [3]string, vars: *parser.sysvars) !void {
     var num: u64 = try parser.argparse(vars, pc, args[1]);
     var arr: [8]u8 = m.toArr(num);
     var i: u64 = 0;
-    while (i < 8) : (i += 1) try parser.parse(file, .{ commands.srb, @intCast(u8, try parser.argparse(vars, pc, args[0])), @intCast(u8, i), @intCast(u8, arr[i]) }, pc);
+    while (i < 8) : (i += 1) try parser.parse(file, .{ commands.srb, @as(u8, @intCast(try parser.argparse(vars, pc, args[0]))), @as(u8, @intCast(i)), @as(u8, @intCast(arr[i])) }, pc);
 }
 pub fn setvar(file: std.fs.File, pc: *u64, args: [3]string, vars: *parser.sysvars) !void {
     _ = file;

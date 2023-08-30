@@ -69,7 +69,7 @@ fn compilefiles(filenames: []string, dst: string, pc: *u64, mainfn: bool, errc: 
         var numb: [8]u8 = m.toArr(mainptr);
         i = 0;
         pc.* = 0;
-        while (i < 8) : (i += 1) try parser.parse(dststream, .{ @as(u8, commands.srb), @intCast(u8, 0), @intCast(u8, i), @intCast(u8, numb[i]) }, pc);
+        while (i < 8) : (i += 1) try parser.parse(dststream, .{ @as(u8, @intCast(commands.srb)), @as(u8, @intCast(0)), @as(u8, @intCast(i)), @as(u8, @intCast(numb[i])) }, pc);
         if (mainptr != 0) try parser.parse(dststream, .{ commands.jmp, 0, 0, 0 }, pc);
     }
     sv.public.free();

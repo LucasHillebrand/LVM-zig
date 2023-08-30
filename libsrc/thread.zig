@@ -45,8 +45,8 @@ pub const thread = struct {
         self.cma = 0;
         self.pc = 0;
         self.status = 0;
-        for (self.register) |*iteml| {
-            for (iteml.*) |*item| {
+        for (&self.register) |*iteml| {
+            for (&iteml.*) |*item| {
                 item.* = 0;
             }
         }

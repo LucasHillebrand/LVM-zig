@@ -4,7 +4,7 @@ pub fn toArr(num: u64) [8]u8 {
 
     var i: u4 = 0;
     while (i < 8) : (i += 1) {
-        arr[i] = @intCast(u8, number % 256);
+        arr[i] = @as(u8, @intCast(number % 256));
         number -= arr[i];
         number /= 256;
     }
@@ -21,7 +21,7 @@ pub fn pow(o: u64, n: u64) u64 {
 pub fn toInt(arrnum: [8]u8) u64 {
     var i: u4 = 0;
     var res: u64 = 0;
-    while (i < 8) : (i += 1) res +%= @intCast(u64, arrnum[i]) * pow(256, i);
+    while (i < 8) : (i += 1) res +%= @as(u64, arrnum[i]) * pow(256, i);
     return res;
 }
 
@@ -31,10 +31,10 @@ pub fn add(a: [8]u8, b: [8]u8) [8]u8 {
     var tmpres: u9 = 0;
     var i: u4 = 0;
     while (i < 8) : (i += 1) {
-        tmpres = @intCast(u9, a[i]) +% (@intCast(u9, b[i]) + overhead);
+        tmpres = @as(u9, a[i]) +% (@as(u9, @intCast(b[i])) + overhead);
         overhead = 0;
         if (tmpres >= 0x100) overhead = 1;
-        res[i] = @intCast(u8, tmpres % 256);
+        res[i] = @as(u8, @intCast(tmpres % 256));
     }
     return res;
 }
@@ -45,10 +45,10 @@ pub fn sub(a: [8]u8, b: [8]u8) [8]u8 {
     var tmpres: u9 = 0;
     var i: u4 = 0;
     while (i < 8) : (i += 1) {
-        tmpres = @intCast(u9, a[i]) -% (@intCast(u9, b[i]) + overhead);
+        tmpres = @as(u9, a[i]) -% (@as(u9, b[i]) + overhead);
         overhead = 0;
         if (tmpres >= 0x100) overhead = 1;
-        res[i] = @intCast(u8, tmpres % 256);
+        res[i] = @as(u8, @intCast(tmpres % 256));
     }
     return res;
 }

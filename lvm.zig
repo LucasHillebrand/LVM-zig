@@ -57,7 +57,7 @@ pub fn main() void {
                 if (system.threads[i].status == 1) {
                     pcbak = system.threads[i].pc;
                     while (j < 4) : (j += 1) nextBytes[j] = system.mem[pcbak + j];
-                    system.exec(@intCast(u4, i), nextBytes, &errc);
+                    system.exec(@as(u4, @intCast(i)), nextBytes, &errc);
                     if (pcbak == system.threads[i].pc) system.threads[i].pc += 4;
                 }
             }

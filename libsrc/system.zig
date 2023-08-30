@@ -15,7 +15,7 @@ pub const system = struct {
     }
 
     pub fn clr(self: *system) void {
-        for (self.threads) |*thread| {
+        for (&self.threads) |*thread| {
             thread.clr();
         }
     }
@@ -26,7 +26,7 @@ pub const system = struct {
 
     pub fn print(self: *system, errc: *u64) void {
         var i: u4 = 0;
-        for (self.threads) |*thread| {
+        for (&self.threads) |*thread| {
             efn.print("\n\n--- thread: {d} --- \n", .{i}, errc);
             thread.print(errc);
             i += 1;
@@ -35,7 +35,7 @@ pub const system = struct {
 
     pub fn exec(self: *system, thread: u4, command: [4]u8, errc: *u64) void {
         var args: [3]u8 = .{ 0, 0, 0 };
-        for (args) |*argument, i| {
+        for (&args, 0..) |*argument, i| {
             argument.* = command[i + 1];
         }
         switch (command[0]) {
